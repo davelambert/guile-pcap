@@ -1,0 +1,29 @@
+Guile-pcap: Guile bindings to libpcap
+-------------------------------------
+
+This module provides a set of Guile procedures for interfacing to
+libpcap.
+
+The home of this package is
+http://homepages.inf.ed.ac.uk/s0343920/free-software.html
+
+Suggestions, bug reports, and general complaints should go to me, Dave
+Lambert, at <d.j.lambert@gmail.com>.
+
+Installation
+____________
+
+See the file INSTALL for generic installation help.
+
+I have only tested guile-pcap with Guile 1.6.2 and 1.6.4.
+
+You will, of course, require libpcap.  I have used 0.7.1 and 0.8.3.
+
+Usage
+-----
+
+From Guile, just
+
+     guile> (use-modules (net pcap))
+
+And you now have access to all the (relevant) functions from pcap.h.

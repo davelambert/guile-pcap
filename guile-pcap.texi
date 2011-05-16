@@ -1,0 +1,104 @@
+\input texinfo  @c -*-texinfo-*-
+
+@setfilename guile-pcap.info
+@settitle Guile @sc{pcap} manual
+
+@include version.texi
+
+@titlepage
+@title Guile @sc{pcap} Manual
+@subtitle For use with Guile @sc{pcap} @value{VERSION}
+
+@author Dave Lambert
+@page
+@end titlepage
+@page
+
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top Texinfo
+
+@end ifnottex
+
+@menu
+* Introduction::                
+* Reference::                   
+@end menu
+
+@node Introduction, Reference, Top, Top
+@chapter Introduction
+
+Guile @sc{pcap} is a module for Guile, providing bindings to libpcap,
+a library supporting capture of network traffic.
+
+@menu
+* Getting Guile @sc{pcap}::     
+* Example::                     
+* What you get::                
+@end menu
+
+@node Getting Guile @sc{pcap}, Example, Introduction, Introduction
+@section Getting Guile @sc{pcap}
+
+You can find the latest version of Guile @sc{pcap} at its homepage,
+@url{http://guile-pcap.sourceforge.net/}.
+
+@node Example, What you get, Getting Guile @sc{pcap}, Introduction
+@section Example
+
+Using libpcap from Guile is very like using it from C.  The following
+session shows the capture of an @sc{arp} request from my machine.  You
+will probably need to have superuser privileges to open the network
+interface.
+
+@example
+guile> (use-modules (net pcap))
+guile> (define pcap (pcap-open-live "eth0" 80 #t 0))
+guile> pcap
+#<pcap 80b0fe0>
+guile> (pcap-next pcap)
+((1044117337 . 607423) 30 42 #u8(255 255 255 255 255 255 0 4 117 119 220 241 8 6 0 1 8 0 6 4 0 1 0 4 117 119 220 241 10 208 80 57 0 0 0 0 0 0 10 208 80 51))
+@end example
+
+To explain the result: the pair is the number of seconds since the
+start of the Unix epoch, and the microseconds elapsed within that
+second.  The @samp{30} is the number of bytes captured, the @samp{42}
+is the length of that packet on the wire.  And the array at the end
+holds those 30 bytes of packet.
+
+@node What you get,  , Example, Introduction
+@section What you get
+
+Almost all the functions in libpcap are available in Guile @sc{pcap}.
+Those omitted are not are not useful in Guile.  They are:
+
+@itemize
+@item @code{pcap_close}
+@item @code{pcap_dump_close}
+@item @code{pcap_freecode}
+@end itemize
+
+The deallocation of libpcap's resources is handled by Guile's garbage
+collection, so you need not worry about calling the above functions.
+
+Guile @sc{pcap} adds several type predicates:
+
+@itemize
+@item @code{pcap-bpf-program?}
+@item @code{pcap-dumper?}
+@item @code{pcap-pcap?}
+@end itemize
+
+
+@node Reference,  , Introduction, Top
+@chapter Reference
+
+The definitive reference for libpcap is libpcap itself.  The
+documentation for Guile @sc{pcap} notes the differences between the
+two, but for detail, check the pcap docs.
+
+@include procedures-manual.texi
+
+@contents
+@bye
